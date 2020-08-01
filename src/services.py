@@ -83,6 +83,7 @@ class Linkedin():
 		except Exception as e:
 			print('Logout button not found.', str(e))
 
+		self.chrome.quit()		
 
 
 class Vagas():
@@ -152,3 +153,5 @@ class Vagas():
 			out_button.click()
 		except Exception as e:
 			print('Logout button not found.', str(e))
+
+		self.chrome.quit()

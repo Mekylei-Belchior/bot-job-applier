@@ -132,4 +132,5 @@ dmypy.json
 /driver
 
 # Credentials
-/src/credentials.txt
+/src/credentials_linkedin.txt
+/src/credentials_vagas.txt

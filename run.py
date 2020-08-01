@@ -1,5 +1,5 @@
 from src.driver import DriverPreparation
-from src.services import Linkedin
+from src.services import Linkedin, Vagas
 
 from cryptography.fernet import Fernet
 
@@ -22,7 +22,7 @@ def set_driver():
 		return chrome_driver
 
 
-def credentials():
+def credentials(service):
 	""" 
 	Returns login credentials.
 	"""
@@ -30,7 +30,7 @@ def credentials():
 	with open('C:/Users/mekyl/OneDrive/Documentos/chave.key', 'rb') as k:
 		key = k.read()
 
-	with open('./src/credentials.txt', 'r') as c:
+	with open('./src/credentials_' + service + '.txt', 'r') as c:
 		lines = c.readlines()
 
 	f = Fernet(key)
@@ -38,13 +38,40 @@ def credentials():
 	return [f.decrypt(line.encode()).decode() for line in lines]
 
 
+def use_linkedin(driver, email, password):
+	"""
+	Run LinkedIn process.
+	"""
 
-driver = set_driver()
-email, password = [*credentials()]
-
-linkedin = Linkedin(driver, email, password)
-linkedin.login()
-linkedin.logout()
+	linkedin = Linkedin(driver, email, password)
+	linkedin.login()
+	linkedin.logout()
 
 
+def use_vagas(driver, email, password):
+	"""
+	Run Vagas process.
+	"""
 
+	vagas = Vagas(driver, email, password)
+	vagas.login()
+	vagas.logout()
+
+
+def main(service='vagas'):
+	"""
+	Main function.
+	
+	"""
+
+	driver = set_driver()
+	email, password = [*credentials(service)]
+
+	if service.lower().strip() == 'linkedin':
+		return use_linkedin(driver, email, password)
+	else:
+		return use_vagas(driver, email, password)
+
+
+if __name__ == '__main__':
+	main()

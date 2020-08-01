@@ -58,7 +58,7 @@ class Linkedin():
 				presence_of_element_located((By.CLASS_NAME, 'msg-overlay-bubble-header')))
 			msg.click()
 		except Exception as e:
-			print('Message window element not found.', str(e))
+			print('Chat window element not found.', str(e))
 
 
 	def logout(self):

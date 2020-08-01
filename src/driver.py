@@ -15,7 +15,7 @@ class DriverPreparation():
 
 	Variables:
 		p {str} -- Chrome Webdriver page
-		p {str} -- URL to Google API directory
+		l {str} -- URL to Google API directory
 		c {str} -- Chrome Web Browser directory path
 		d {str} -- Webdriver path
 

@@ -1,4 +1,4 @@
-""" Module imports """
+""" Modules import """
 from os import listdir, path, mkdir
 from os.path import isdir
 from shutil import rmtree

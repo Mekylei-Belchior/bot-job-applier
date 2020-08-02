@@ -1,77 +1,76 @@
+""" Modules import """
+from cryptography.fernet import Fernet
+
 from src.driver import DriverPreparation
 from src.services import Linkedin, Vagas
 
-from cryptography.fernet import Fernet
 
 
 def set_driver():
-	"""
-	Returns url path from webdriver directory.
-	
-	"""
+    """
+    Returns url path from webdriver directory.
 
-	dp = DriverPreparation()
+    """
 
-	chrome_driver = dp.chrome_driver()
+    driver = DriverPreparation()
 
-	if not chrome_driver == None:
-		return chrome_driver
-	else:
-		dp.update_driver()
-		chrome_driver = dp.chrome_driver()
-		return chrome_driver
+    chrome_driver = driver.chrome_driver()
+
+    return chrome_driver
 
 
 def credentials(service):
-	""" 
-	Returns login credentials.
-	"""
+    """
+    Returns login credentials.
 
-	with open('C:/Users/mekyl/OneDrive/Documentos/chave.key', 'rb') as k:
-		key = k.read()
+    """
 
-	with open('./src/credentials_' + service + '.txt', 'r') as c:
-		lines = c.readlines()
+    with open('C:/Users/mekyl/OneDrive/Documentos/chave.key', 'rb') as key_file:
+        key = key_file.read()
 
-	f = Fernet(key)
+    with open('./src/credentials_' + service + '.txt', 'r') as credentials_file:
+        lines = credentials_file.readlines()
 
-	return [f.decrypt(line.encode()).decode() for line in lines]
+    fernet = Fernet(key)
+
+    return [fernet.decrypt(line.encode()).decode() for line in lines]
 
 
 def use_linkedin(driver, email, password):
-	"""
-	Run LinkedIn process.
-	"""
+    """
+    Run LinkedIn process.
 
-	linkedin = Linkedin(driver, email, password)
-	linkedin.login()
-	linkedin.logout()
+    """
+
+    linkedin = Linkedin(driver, email, password)
+    linkedin.login()
+    linkedin.logout()
 
 
 def use_vagas(driver, email, password):
-	"""
-	Run Vagas process.
-	"""
+    """
+    Run Vagas process.
 
-	vagas = Vagas(driver, email, password)
-	vagas.login()
-	vagas.logout()
+    """
+
+    vagas = Vagas(driver, email, password)
+    vagas.login()
+    vagas.logout()
 
 
 def main(service='vagas'):
-	"""
-	Main function.
-	
-	"""
+    """
+    Main function.
 
-	driver = set_driver()
-	email, password = [*credentials(service)]
+    """
 
-	if service.lower().strip() == 'linkedin':
-		return use_linkedin(driver, email, password)
-	else:
-		return use_vagas(driver, email, password)
+    driver = set_driver()
+    email, password = [*credentials(service)]
+
+    if service.lower().strip() == 'linkedin':
+        return use_linkedin(driver, email, password)
+    return use_vagas(driver, email, password)
 
 
 if __name__ == '__main__':
-	main()
+    main()

@@ -134,3 +134,7 @@ dmypy.json
 # Credentials
 /src/credentials_linkedin.txt
 /src/credentials_vagas.txt
+
+# Pylint
+*.pylintrc
+

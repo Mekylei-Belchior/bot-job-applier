@@ -55,7 +55,11 @@ def use_vagas(driver, email, password):
 
     vagas = Vagas(driver, email, password)
     vagas.login()
-    vagas.logout()
+    links = vagas.search('supervisor')
+    print(links)
+    print(len(links))
+    #vagas.logout()
+    input()
 
 
 def main(service='vagas'):

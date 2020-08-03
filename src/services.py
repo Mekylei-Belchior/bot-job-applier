@@ -1,5 +1,8 @@
 """ Modules import """
+import re
 from time import sleep
+from requests import get
+from bs4 import BeautifulSoup as bfs
 
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
 from selenium.webdriver.support.ui import WebDriverWait
@@ -185,3 +188,48 @@ class Vagas():
             print('Logout button not found.', str(error))
 
         self.chrome.quit()
+
+
+    def search(self, *args):
+        """
+        Move to url page.
+        """
+
+        url = self.generate_url(*args)
+
+        self.chrome.get(url)
+        links = self.extract_links_result(url)
+        return links
+
+
+    def extract_links_result(self, url):
+        """
+        Gets all job application urls from the url page.
+        """
+
+        html = get(url)
+        html = html.text
+
+        soup = bfs(html, 'html.parser')
+        links = []
+
+        for link in soup.findAll('a', attrs={'href': re.compile("^/vagas/v")}):
+            links.append(link.get('href'))
+        return links
+
+
+    def generate_url(self, *args):
+        """
+        This method create an url serching.
+
+        Parms:
+            args -> Some information about the job to create an url.
+
+            Exemple: Job position, city or region, company name.
+        """
+        info = ''
+
+        for arg in args:
+            info = info + '-' + arg
+
+        return 'https://www.vagas.com.br/vagas-de' + info + '?'

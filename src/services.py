@@ -190,6 +190,33 @@ class Vagas():
         self.chrome.quit()
 
 
+    def job_application(self, *args):
+        """
+        This method initialize the process to apply
+        for some job application.
+        """
+        application = {}
+        applications = []
+
+        for link in self.search(*args):
+            url = self.website + link
+            self.chrome.get(url)
+            confirm, description = self.apply(url)
+
+            application['Title'] = link.split('/')[3]
+            application['ID'] = link.split('/')[2]
+            application['Description'] = description
+
+            if confirm:
+                application['Status'] = 'Applied'
+            else:
+                application['Status'] = 'Not Applied'
+
+            applications.append(application)
+
+        return applications
+
+
     def apply(self, url):
         """
         Submit for the job application.

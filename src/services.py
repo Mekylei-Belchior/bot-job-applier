@@ -228,7 +228,7 @@ class Vagas():
         soup = bfs(html, 'html.parser')
 
         description = soup.find(
-            'div', attrs={'class': 'job-tab-content job-description__text texto'}).textContent
+            'div', attrs={'class': 'job-tab-content job-description__text texto'}).text
 
         try:
             apply_buttom = WebDriverWait(self.chrome, 5).until(
@@ -249,14 +249,18 @@ class Vagas():
         url = self.generate_url(*args)
         self.chrome.get(url)
 
+        """
+        TODO: Improve this section to click on more application buttom.
+        There is some problem on website and also cannot be done manually.
+
         while True:
             try:
                 more_application = WebDriverWait(self.chrome, 3).until(
-                    presence_of_element_located((By.CLASS_NAME, 'btMaisVagas btn')))
-                more_application.submit()
+                    presence_of_element_located((By.ID, 'maisVagas')))
+                more_application.click()
             except (TimeoutException, StaleElementReferenceException):
                 break
-
+        """
         links = self.extract_links_result(url)
         return links
 

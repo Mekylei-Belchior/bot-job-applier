@@ -190,6 +190,26 @@ class Vagas():
         self.chrome.quit()
 
 
+    def search(self, *args):
+        """
+        Search for job application urls.
+        """
+
+        url = self.generate_url(*args)
+        self.chrome.get(url)
+
+        while True:
+            try:
+                more_application = WebDriverWait(self.chrome, 3).until(
+                    presence_of_element_located((By.CLASS_NAME, 'btMaisVagas btn')))
+                more_application.submit()
+            except (TimeoutException, StaleElementReferenceException):
+                break
+
+        links = self.extract_links_result(url)
+        return links
+
+
     def extract_links_result(self, url):
         """
         Gets all job application urls from the html page.

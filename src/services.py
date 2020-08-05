@@ -190,6 +190,22 @@ class Vagas():
         self.chrome.quit()
 
 
+    def extract_links_result(self, url):
+        """
+        Gets all job application urls from the html page.
+        """
+
+        html = get(url)
+        html = html.text
+
+        soup = bfs(html, 'html.parser')
+        links = []
+
+        for link in soup.findAll('a', attrs={'href': re.compile("^/vagas/v")}):
+            links.append(link.get('href'))
+        return links
+
+
     def generate_url(self, *args):
         """
         This method create an url serching.

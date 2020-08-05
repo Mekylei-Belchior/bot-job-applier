@@ -1,4 +1,5 @@
 """ Modules import """
+from datetime import datetime
 from cryptography.fernet import Fernet
 
 from src.driver import DriverPreparation
@@ -47,7 +48,7 @@ def use_linkedin(driver, email, password):
     linkedin.logout()
 
 
-def use_vagas(driver, email, password):
+def use_vagas(driver, email, password, job_description):
     """
     Run Vagas process.
 
@@ -55,14 +56,25 @@ def use_vagas(driver, email, password):
 
     vagas = Vagas(driver, email, password)
     vagas.login()
-    links = vagas.search('supervisor')
-    print(links)
-    print(len(links))
-    #vagas.logout()
-    input()
+    applications = vagas.job_application(*job_description)
+    save_info_application(applications)
+    vagas.logout()
 
 
-def main(service='vagas'):
+def save_info_application(informations):
+    """
+    Create a file with informations about job application.
+    """
+    date = datetime.now().strftime('%Y-%m-%d-%H%M%S')
+
+    with open('./applications/applications' + date + '.txt', 'w') as file:
+        for information in informations:
+            for key, value in information.items():
+                info = key + ': ' + value.replace('\n', '')
+                file.writelines(info + '\n')
+
+
+def main(job_description, service='vagas'):
     """
     Main function.
 
@@ -73,8 +85,8 @@ def main(service='vagas'):
 
     if service.lower().strip() == 'linkedin':
         return use_linkedin(driver, email, password)
-    return use_vagas(driver, email, password)
+    return use_vagas(driver, email, password, job_description)
 
 
 if __name__ == '__main__':
-    main()
+    main(job_description=['Assistente de Service Desk Jr'])

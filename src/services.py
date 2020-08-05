@@ -190,6 +190,30 @@ class Vagas():
         self.chrome.quit()
 
 
+    def apply(self, url):
+        """
+        Submit for the job application.
+        """
+
+        html = get(url)
+        html = html.text
+
+        soup = bfs(html, 'html.parser')
+
+        description = soup.find(
+            'div', attrs={'class': 'job-tab-content job-description__text texto'}).textContent
+
+        try:
+            apply_buttom = WebDriverWait(self.chrome, 5).until(
+                presence_of_element_located((By.NAME, 'bt-candidatura')))
+            apply_buttom.submit()
+        except TimeoutException as error:
+            print('Apply buttom not found.', str(error))
+            return False, description
+
+        return True, description
+
+
     def search(self, *args):
         """
         Search for job application urls.

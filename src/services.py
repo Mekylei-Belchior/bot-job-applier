@@ -203,9 +203,9 @@ class Vagas():
             self.chrome.get(url)
             confirm, description = self.apply(url)
 
-            application['Title'] = link.split('/')[3]
+            application['Title'] = link.split('/')[3].replace('-', ' ').upper()
             application['ID'] = link.split('/')[2]
-            application['Description'] = description
+            application['Description'] = description[22:]
 
             if confirm:
                 application['Status'] = 'Applied'

@@ -72,6 +72,7 @@ def save_info_application(informations):
             for key, value in information.items():
                 info = key + ': ' + value.replace('\n', '')
                 file.writelines(info + '\n')
+            file.writelines('\n')
 
 
 def main(job_description, service='vagas'):
@@ -89,4 +90,4 @@ def main(job_description, service='vagas'):
 
 
 if __name__ == '__main__':
-    main(job_description=['Assistente de Service Desk Jr'])
+    main(job_description=['Coordenador 3D'])

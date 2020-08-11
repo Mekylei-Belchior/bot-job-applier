@@ -2,6 +2,7 @@
 import re
 from time import sleep
 from requests import get
+from datetime import datetime
 from bs4 import BeautifulSoup as bfs
 
 from selenium.webdriver.support.expected_conditions import presence_of_element_located
@@ -203,6 +204,7 @@ class Vagas():
             self.chrome.get(url)
             confirm, description = self.apply(url)
 
+            application['Date'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             application['Title'] = link.split('/')[3].replace('-', ' ').upper()
             application['ID'] = link.split('/')[2]
             application['Description'] = description[22:]
@@ -249,10 +251,6 @@ class Vagas():
         url = self.generate_url(*args)
         self.chrome.get(url)
 
-        """
-        TODO: Improve this section to click on more application buttom.
-        There is some problem on website and also cannot be done manually.
-
         while True:
             try:
                 more_application = WebDriverWait(self.chrome, 3).until(
@@ -260,7 +258,7 @@ class Vagas():
                 more_application.click()
             except (TimeoutException, StaleElementReferenceException):
                 break
-        """
+
         links = self.extract_links_result(url)
         return links
 
